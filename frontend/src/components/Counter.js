@@ -7,7 +7,7 @@ const Counter = () => {
     const [errorMsg,setErrMsg] = useState(false);
 
     // const api_link = "http://localhost:3002"
-    const MAPS_API = 'e17d529b4e9f4752b20cd76bbce08bfd'
+   
 
     useEffect(() => {
         getAllClicks();
@@ -19,21 +19,32 @@ const Counter = () => {
         let cval= parseInt(counter)+1;
         setCounter(cval);
         let locationData = "";
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(async (position) => {
-            locationData = await getPosition(position);
-            console.log(cval, locationData);
-            await storeInDB(cval, locationData);
-          },async(error)=>{
-            console.log(error.message);
-            locationData="Unknown location";
-            await storeInDB(cval,locationData);
-          });
-        } else {
-          locationData = "Geolocation is not supported by this browser.";
-          await storeInDB(cval, locationData);
-        }
+
+        locationData= await getLocation();
+
+        // if (navigator.geolocation) {
+        //   navigator.geolocation.getCurrentPosition(async (position) => {
+        //     locationData = await getPosition(position);
+        //     console.log(cval, locationData);
+        //     await storeInDB(cval, locationData);
+        //   },async(error)=>{
+        //     console.log(error.message);
+        //     locationData="Unknown location";
+        //     await storeInDB(cval,locationData);
+        //   });
+        // } else {
+        //   locationData = "Geolocation is not supported by this browser.";
+        //   await storeInDB(cval, locationData);
+        // }
+
+        await storeInDB(cval,locationData)
       };
+
+      async function getLocation() {
+        const response = await axios.get('http://ip-api.com/json');
+        const { country, city } = response.data;
+        return `${city}, ${country}`;
+      }
     
      
 
@@ -80,12 +91,12 @@ const Counter = () => {
         try {
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
-            const apiUrl = "https://api.geoapify.com/v1/geocode/reverse?lat=" + latitude + "&lon=" + longitude + `&apiKey=${MAPS_API}`;
+            const apiUrl = "http://ip-api.com/json/" + latitude + "," + longitude;
             let resp = await axios.get(apiUrl);
             let data = resp.data;
             console.log(data);
-            const country = data.features[0].properties.country;
-            const city = data.features[0].properties.city;
+            const country = data.country;
+            const city = data.city;
             const locationString = `${city}, ${country}`;
             // setLocation(locationString);
             return locationString;
@@ -94,8 +105,9 @@ const Counter = () => {
             // setLocation("Unable to get your location.");
             return "Unable to get your location.";
         }
-
+    
     }
+    
 
     return (
         <div className="container mt-5">
