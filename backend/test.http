@@ -1,0 +1,51 @@
+get http://localhost:3002/task/getMyTasks/ram
+
+
+
+################
+
+post http://localhost:3002/task/createUser
+Content-Type: application/json
+
+{
+    "username":"ram"
+}
+
+###
+post http://localhost:3002/task/createTask
+Content-Type: application/json
+
+{
+    "username":"ram",
+    "task":{
+        "title":"todo 3",
+        "date":"2/2/23",
+        "description":"this is task 3",
+        "status":"On going"
+    }
+}
+######
+
+post http://localhost:3002/task/updateTask
+Content-Type: application/json
+
+{
+    "username":"ram",
+    "task":{
+        "taskId": "4d279d0d-6ce4-4356-b5b9-578d9e13565b",
+        "title": "todo 4",
+        "date": "2023-02-02T05:00:00.000Z",
+        "description": "this is task 4 after deleting task 3",
+        "status": "Future"
+    }
+}
+
+########
+post http://localhost:3002/task/deleteTask
+Content-Type: application/json
+
+{
+    "username":"ram",
+   "taskId": "c3e7b57d-5c3a-4ccb-99ad-64f7281684bf"
+    
+}

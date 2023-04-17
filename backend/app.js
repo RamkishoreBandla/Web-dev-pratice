@@ -7,6 +7,7 @@ const cors = require('cors')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const Locationrouter= require('./routes/location')
+const TasksRouter =require('./routes/Tasks');
 var app = express();
 
 // view engine setup
@@ -22,7 +23,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/location',Locationrouter)
+app.use('/location',Locationrouter);
+app.use("/task",TasksRouter);
 
 app.use("*",(req,res,next)=>{
   res.sendFile(path.join(__dirname,"public","index.html"));

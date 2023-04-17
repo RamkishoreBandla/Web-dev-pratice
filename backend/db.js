@@ -10,6 +10,22 @@ const Locations = mongoose.Schema({
 }, { collection: "locations" }
 )
 
+const Tasks = mongoose.Schema({
+
+        username: String,
+        userId:String,
+        tasks: [
+          {
+            taskId: String,
+            title: String,
+            date: Date,
+            description: String,
+            status: String
+          }
+        
+        ]
+            
+},{ collection: "Tasks" })
 
 let dbcon = {};
 
@@ -17,11 +33,20 @@ dbcon.ItemDb = async () => {
     try {
         let con = await mongoose.connect(mongolink, { useNewUrlParser: true, useUnifiedTopology: true })
         let coll = await con.model('locations', Locations);
-
         return coll;
     }
     catch (rr) {
+        throw rr;
+    }
+}
 
+dbcon.TasksDb = async () => {
+    try {
+        let con = await mongoose.connect(mongolink, { useNewUrlParser: true, useUnifiedTopology: true })
+        let coll = await con.model('Tasks', Tasks);
+        return coll;
+    }
+    catch (rr) {
         throw rr;
     }
 }

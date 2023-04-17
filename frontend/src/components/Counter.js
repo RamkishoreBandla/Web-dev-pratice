@@ -21,22 +21,6 @@ const Counter = () => {
         let locationData = "";
 
         locationData= await getLocation();
-
-        // if (navigator.geolocation) {
-        //   navigator.geolocation.getCurrentPosition(async (position) => {
-        //     locationData = await getPosition(position);
-        //     console.log(cval, locationData);
-        //     await storeInDB(cval, locationData);
-        //   },async(error)=>{
-        //     console.log(error.message);
-        //     locationData="Unknown location";
-        //     await storeInDB(cval,locationData);
-        //   });
-        // } else {
-        //   locationData = "Geolocation is not supported by this browser.";
-        //   await storeInDB(cval, locationData);
-        // }
-
         await storeInDB(cval,locationData)
       };
 
